@@ -74,6 +74,8 @@ class com.ElTorqiro.UITweaks.AddonUtils.WaitFor {
 		else {
 			
 			// if timer hasn't expired, try again
+			
+			// NOTE: Had to change the original code since it would give a type error
 			//if ( (new Date()) - runner.startedAt < runner.timeout ) {
 			var d:Date = new Date();
 			if ( d.getDate() - runner.staredAt < runner.timeout ) {

@@ -8,6 +8,7 @@ import com.Utils.Archive;
  * Please note that this is *not* a style guide! I have tried to keep the code as simple as possible and that mean avoiding some
  * abstractions. This doesn't mean that you should do the same!
  * @author Icarus James
+ * @author daf
  */
 class BagLockMain 
 {
