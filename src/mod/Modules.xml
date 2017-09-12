@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Root>
-  <Module  name = "Skeleton"
-    movie       = "Skeleton\Skeleton.swf"
+  <Module  name = "UITweaks_BagLock"
+    movie       = "UITweaks_BagLock\BagLock.swf"
     flags       = "GMF_CFG_STORE_USER_CONFIG | GMF_DONT_UNLOAD"
     depth_layer = "Top"
     sub_depth   = "10"
-    variable    = "Skeleton"
-    criteria    = "Skeleton &amp;&amp; (guimode &amp; (GUIMODEFLAGS_INPLAY | GUIMODEFLAGS_ENABLEALLGUI))"
-    config_name = "Skeleton_Cfg"
+    variable    = "UITweaks_BagLock"
+    criteria    = "UITweaks_BagLock &amp;&amp; (guimode &amp; (GUIMODEFLAGS_INPLAY | GUIMODEFLAGS_ENABLEALLGUI))"
+    config_name = "UITweaks_BagLock_Cfg"
   />
 </Root>

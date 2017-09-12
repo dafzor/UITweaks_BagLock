@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?> 
 <Root>
-  <Value name="Skeleton" value="true" />
-  <Archive name="Skeleton_Cfg" />
+  <Value name="UITweaks_BagLock" value="true" />
+  <Archive name="UITweaks_BagLock_Cfg" />
 </Root>

@@ -1,3 +1,4 @@
+// implement commands http://legacy.tswdb.com/miscellaneous/chat-scripts
 import com.Utils.Archive;
 
 /**
@@ -8,9 +9,9 @@ import com.Utils.Archive;
  * abstractions. This doesn't mean that you should do the same!
  * @author Icarus James
  */
-class SkeletonMain 
+class BagLockMain 
 {
-	private static var s_app: SkeletonMod;
+	private static var s_app: BagLockMod;
 	
 	/**
 	 * This is the main entry point for you mod. It's main purpose is to provide the root MovieClip on which to build the rest of your addon.
@@ -22,7 +23,7 @@ class SkeletonMain
 	 */
 	public static function main(swfRoot:MovieClip):Void 
 	{
-		s_app = new SkeletonMod(swfRoot);
+		s_app = new BagLockMod(swfRoot);
 		
 		// Here we initialize some events that TSW uses to communicated with your addon. Note the lower case used in onLoad.
 		swfRoot.onLoad = OnLoad;
@@ -34,7 +35,7 @@ class SkeletonMain
 	/**
 	 * This is the non-static constructor for your entrypoint class. It is best ignored as it is (as far as I know) never called.
 	 */
-	public function SkeletonMain() { }
+	public function BagLockMain() { }
 	
 	/**
 	 * This is your OnLoad event handler. OnLoad is called after login.

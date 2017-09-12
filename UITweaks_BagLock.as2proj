@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\Skeleton.swf" />
+    <movie path="bin\BagLock.swf" />
     <movie fps="30" />
     <movie width="1000" />
     <movie height="800" />
@@ -37,7 +37,7 @@
   </build>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\SkeletonMain.as" />
+    <compile path="src\BagLockMain.as" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
@@ -50,13 +50,13 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\deployment\Flash\*.*" "C:\Program Files (x86)\Steam\SteamApps\common\The Secret World\Data\Gui\Customized\Flash\" /e /y
+  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\deployment\Flash\*.*" "C:\Games\Secret World Legends\Interface\" /e /y
 
-xcopy "$(ProjectDir)\deployment\Scripts\*.*" "C:\Program Files (x86)\Steam\SteamApps\common\The Secret World\Scripts\" /e /y
+xcopy "$(ProjectDir)\deployment\Scripts\*.*" "C:\Games\Secret World Legends\Scripts\" /e /y
 
-xcopy "$(ProjectDir)\src\mod\*.*" "C:\Program Files (x86)\Steam\SteamApps\common\The Secret World\Data\Gui\Customized\Flash\Skeleton\" /e /y
+xcopy "$(ProjectDir)\src\mod\*.*" "C:\Games\Secret World Legends\Interface\UITweaks_BagLock\" /e /y
 
-xcopy "$(OutputFile)" "C:\Program Files (x86)\Steam\SteamApps\common\The Secret World\Data\Gui\Customized\Flash\Skeleton\" /e /y</postBuildCommand>
+xcopy "$(OutputFile)" "C:\Games\Secret World Legends\Interface\UITweaks_BagLock\" /e /y</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
