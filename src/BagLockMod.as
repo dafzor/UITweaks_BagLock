@@ -29,27 +29,24 @@ class BagLockMod
 		// Inicializes our options object, needs to be created now so when we make our
 		// DistributedValue monitors the list actually has elements...
 		m_prefs = {
-			enabled: undefined,
-			override_on_shift: undefined,
-			override_on_ctrl: undefined,
-			override_on_alt: undefined
+			Enabled: undefined,
+			OverrideOnShift: undefined,
+			OverrideOnCtrl: undefined,
+			OverrideOnAlt: undefined
 		};
 
 		// Overides our press event handler to be injected in the bags
-		ReplacementPressEventHandler = function(buttonIdx: Number) {	
-			//var prefs = this._parent.UITweaks_BagLock_Prefs;
-			var suffix = this._parent.UITweaks_BagLock_Prefs;
-			
+		ReplacementPressEventHandler = function(buttonIdx: Number) {			
 			var keyMap: Object = {
-				shift: Key.SHIFT,
-				ctrl: Key.CONTROL,
-				alt: Key.ALT
+				Shift: Key.SHIFT,
+				Ctrl: Key.CONTROL,
+				Alt: Key.ALT
 			};
 			
 			// Checks to see if any of the override keys are pressed
 			var isKeyPressed: Boolean;
 			for (var key: String in keyMap) {		
-				if (DistributedValue.GetDValue(suffix + "override_on_" + key)) {
+				if (DistributedValue.GetDValue("UITweaks_BagLock_OverrideOn" + key)) {
 					isKeyPressed = Key.isDown(keyMap[key]);
 
 					// NOTE: In the original code this was inverted, wonder why...
@@ -86,17 +83,16 @@ class BagLockMod
 		for (var name in m_prefs) {
 			m_prefs[name].SignalChanged.Disconnect(OptionChangeHandler, this);
 			m_prefs[name] = undefined;
-		}
-		
+		}		
 	}
 	
 	public function Activate(config: Archive)
 	{
 		// Loads the preferences from the Archive with defaults in case we haven't go any
-		m_prefs.enabled.SetValue(Boolean(config.FindEntry("enabled", true)));
-		m_prefs.override_on_shift.SetValue(Boolean(config.FindEntry("override_on_shift", true)));
-		m_prefs.override_on_ctrl.SetValue(Boolean(config.FindEntry("override_on_ctrl", false)));
-		m_prefs.override_on_alt.SetValue(Boolean(config.FindEntry("override_on_alt", false)));
+		m_prefs.Enabled.SetValue(Boolean(config.FindEntry("Enabled", true)));
+		m_prefs.OverrideOnShift.SetValue(Boolean(config.FindEntry("OverrideOnShift", true)));
+		m_prefs.OverrideOnCtrl.SetValue(Boolean(config.FindEntry("OverrideOnCtrl", false)));
+		m_prefs.OverrideOnAlt.SetValue(Boolean(config.FindEntry("OverrideOnAlt", false)));
 
 		StartBagpackWaitFor();
 	}
@@ -108,8 +104,8 @@ class BagLockMod
 		// Some example code for saving variables to an Archive
 		var config: Archive = new Archive();
 
-		for (var name in m_prefs) {
-			config.AddEntry(name, m_prefs[name].GetValue());
+		for (var pref in m_prefs) {
+			config.AddEntry(pref, m_prefs[pref].GetValue());
 		}
 		
 		return config;
@@ -133,7 +129,7 @@ class BagLockMod
 		StopBagpackWaitFor();
 		
 		// only apply if enabled
-		if (m_prefs.enabled.GetValue()) {
+		if (m_prefs.Enabled.GetValue()) {
 			m_waitForId = WaitFor.start(Delegate.create(this, IsBackpackAvailable),
 				100, 3000, Delegate.create(this, Hook));
 		}
@@ -165,7 +161,7 @@ class BagLockMod
 			
 			// apply or revert hook on window chrome only when inventory is open
 			if (m_backpackMonitor.GetValue()) {
-				HookWindowChrome(bag, m_prefs.enabled.GetValue());
+				HookWindowChrome(bag, m_prefs.Enabled.GetValue());
 			}
 			
 			// NOTE: There was a option to lock items when a bag was pinned, due to 
@@ -209,7 +205,7 @@ class BagLockMod
 		
 		// In the original mod this passed an array of prefs, it was changed to DistributedValues
 		// so the it's no longer needed so we just pass the suffix we  using.
-		setHook ? window.UITweaks_BagLock_Prefs = m_prefSuffix : delete window.UITweaks_BagLock_Prefs;
+		setHook ? window.UITweaks_BagLock_Prefs = true : delete window.UITweaks_BagLock_Prefs;
 	}
 	
 	/**
@@ -227,7 +223,7 @@ class BagLockMod
 	public function OptionChangeHandler(dv: DistributedValue): Void
 	{
 		// calls the hook to change the state acording to new enabled state
-		if (dv.GetName() == m_prefSuffix + "enabled") {
+		if (dv.GetName() == m_prefSuffix + "Enabled") {
 			Hook();
 		}
 	}
