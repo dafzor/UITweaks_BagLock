@@ -32,7 +32,8 @@ class BagLockMod
 			Enabled: undefined,
 			OverrideOnShift: undefined,
 			OverrideOnCtrl: undefined,
-			OverrideOnAlt: undefined
+			OverrideOnAlt: undefined,
+			AffectSort: undefined
 		};
 
 		// Overides our press event handler to be injected in the bags
@@ -93,6 +94,7 @@ class BagLockMod
 		m_prefs.OverrideOnShift.SetValue(Boolean(config.FindEntry("OverrideOnShift", true)));
 		m_prefs.OverrideOnCtrl.SetValue(Boolean(config.FindEntry("OverrideOnCtrl", false)));
 		m_prefs.OverrideOnAlt.SetValue(Boolean(config.FindEntry("OverrideOnAlt", false)));
+		m_prefs.AffectSort.SetValue(Boolean(config.FindEntry("AffectSort", true)));
 
 		StartBagpackWaitFor();
 	}
@@ -149,7 +151,7 @@ class BagLockMod
 	 * Applies or removes the event override to each opened bag 
 	 * depending on if it's setting enabled is true or not.
 	 */
-	public function Hook(): Void
+	public function Hook(enabled: Boolean): Void
 	{
 		StopBagpackWaitFor();
 
@@ -161,7 +163,7 @@ class BagLockMod
 			
 			// apply or revert hook on window chrome only when inventory is open
 			if (m_backpackMonitor.GetValue()) {
-				HookWindowChrome(bag, m_prefs.Enabled.GetValue());
+				HookWindowChrome(bag, enabled);
 			}
 			
 			// NOTE: There was a option to lock items when a bag was pinned, due to 
@@ -187,20 +189,23 @@ class BagLockMod
 			i_TrashButton: "onPress",
 			i_SortButton: "onPress"
 		};
-
+		
 		for (var name: String in elementEventMap) {
 			var element: MovieClip = window[name];
 			var eventName: String = elementEventMap[name];
 			
-			if (setHook) {
+			// If it's the sort button and affectSort = false, don't hook
+			if (setHook && !(name == "i_SortButton" && !m_prefs.AffectSort.GetValue())) {
 				element.UITweaks_BagLock_Press_Original = element[eventName];
 				element[eventName] = Delegate.create(element, ReplacementPressEventHandler);
 			}
 			else {
-				element[eventName] = element.UITweaks_BagLock_Press_Original;
-				delete element.UITweaks_BagLock_Press_Original;
+				// Only remove if it's actually been hooked since i_SortButton may or may not be hooked
+				if (element.hasOwnProperty("UITweaks_BagLock_Press_Original")) {
+					element[eventName] = element.UITweaks_BagLock_Press_Original;
+					delete element.UITweaks_BagLock_Press_Original;
+				}
 			}
-			
 		}
 		
 		// In the original mod this passed an array of prefs, it was changed to DistributedValues
@@ -224,7 +229,14 @@ class BagLockMod
 	{
 		// calls the hook to change the state acording to new enabled state
 		if (dv.GetName() == m_prefSuffix + "Enabled") {
-			Hook();
+			Hook(m_prefs.Enabled.GetValue());
+		}
+		else if (dv.GetName() == m_prefSuffix + "AffectSort") {
+			// We changed the affect sort option, so we need to remove the old hooks
+			// and apply a new one, so we cheat by setting enabled to fase to remove
+			// the old hooks and then calling it again with to setup the new hook
+			Hook(false);
+			Hook(m_prefs.Enabled.GetValue());
 		}
 	}
 }
